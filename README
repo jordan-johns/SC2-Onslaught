@@ -1,0 +1,49 @@
+SC2-Onslaught
+=============
+
+====================
+What is "Onslaught"?
+====================
+
+The concept of the map is fairly straight forward:  It's a take off of unreal
+tournament's "Onslaught" mode which debuted in UT 2004.
+
+In Onslaught, the idea is that there are two teams with a single goal:  To
+destroy the enemy base's power core.  While simple, there are a few mechanics
+and twists to this.  First, you can't just waltz into the enemy base and blow
+it up because its invulnerable to start, and the enemy team would likely
+obliterate you.
+
+So how do you accomplish the goal of destroying the enemy power core?
+
+This is where the fundamental concept of Onslaught comes in.  There are
+"nodes" on the map that you can capture, and the idea is if you can "connect
+the nodes" from your base to the enemy base then their power core will become
+"vulnerable" at which point you can proceed to destroy it.
+
+A power node is *only* active iff it has a link (either directly or through
+a path of connected nodes) to a base.  If it becomes disconnected, it is no
+longer active and must be reconnected.
+
+To make things interesting, the only way you can attack an enemy power node
+is if you have a path of nodes leading to it!  This leads to interesting
+gameplay tactics.
+
+So where does SC2 Onslaught come into play?  Well, I'm heavily basing it off
+of Unreal Onslaught which was just discussed so the core mechanics WILL stay
+the same; that is there will be two bases, each with the goal of destroying
+the other base's power core, and nodes on the map to connect to accomplish
+this.
+
+========
+Concept
+========
+
+The following is a list of unique gameplay mechanics I will be adding in
+addition to the core Onslaught ones:
+
+- Power nodes will feature an "Expo" (one or more) which will encourage 
+the teams to fight over them.
+
+- In-game leaderboards, so you can see how each player is performing (kills,
+power node captures, resources, etc).

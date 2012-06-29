@@ -8,12 +8,15 @@
 //==================================================================================================
 include "TriggerLibs/NativeLib"
 include "Globals.galaxy"
+include "SetupGame.galaxy"
 
 //--------------------------------------------------------------------------------------------------
 // Trigger: Initialization
 //--------------------------------------------------------------------------------------------------
 
 void InitTriggers() {
+    gt_SetupGame = TriggerCreate("SetupGame");
+    TriggerAddEventMapInit(gt_SetupGame);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -30,5 +33,6 @@ void Main () {
     InitLibs();
     InitTriggers();
     InitGlobals();
+	
 }
 

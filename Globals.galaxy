@@ -11,14 +11,15 @@ include "TriggerLibs/NativeLib"
 //Objects
 
 //Triggers
+trigger gt_SetupGame;
+
 
 // Variables
 
 //--------------------------------------------------------------------------------------------------
 // Globals Initialization
 //--------------------------------------------------------------------------------------------------
-void InitGlobals ()
-{
+void InitGlobals () {
 	
 }
 

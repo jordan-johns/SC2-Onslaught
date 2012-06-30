@@ -1,9 +1,0 @@
-include "TriggerLibs/NativeLib"
-include "Globals.galaxy"
-
-bool SetupGame ( bool testConds, bool runActions ) {
-    //Dew Stuffz
-    UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("I Has Init!"));
-	
-	return true;
-}

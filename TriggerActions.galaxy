@@ -1,23 +1,31 @@
 //==================================================================================================
 //
-// <SC2 - Onslaught> Globals
+// <SC2 - Onslaught> TriggerActions
 //
 // Name:  <SC2 - Onslaught>
 // Author: <Jordan Johns>
 //
 //==================================================================================================
+
 include "TriggerLibs/NativeLib"
+include "Globals.galaxy"
 
-//Objects
-
-//Triggers
-
-// Variables
+// Triggers
+trigger gt_SetupGame;
 
 //--------------------------------------------------------------------------------------------------
-// Globals Initialization
+// Triggers: Actions
 //--------------------------------------------------------------------------------------------------
-void InitGlobals () {
+
+bool setupGame(bool testConds, bool runActions)
+{
+	// False means DONT show it... counter intuitive.
+	libNtve_gf_HideGameUI(false, PlayerGroupAll());
 	
+	Wait(5.0, c_timeReal);
+	
+	// True means SHOW the ui... counter intuitive.
+	libNtve_gf_HideGameUI(true, PlayerGroupAll());
+	
+	return true;
 }
-

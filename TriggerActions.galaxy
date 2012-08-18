@@ -14,18 +14,35 @@ include "Globals.galaxy"
 trigger gt_SetupGame;
 
 //--------------------------------------------------------------------------------------------------
+// Triggers: Initialization
+//--------------------------------------------------------------------------------------------------
+
+void gt_SetupGame_init()
+{
+	gt_SetupGame = TriggerCreate("gt_SetupGame_Func");
+    TriggerAddEventMapInit(gt_SetupGame);
+}
+
+//--------------------------------------------------------------------------------------------------
 // Triggers: Actions
 //--------------------------------------------------------------------------------------------------
 
-bool setupGame(bool testConds, bool runActions)
+bool gt_SetupGame_Func(bool testConds, bool runActions)
 {
 	// False means DONT show it... counter intuitive.
 	libNtve_gf_HideGameUI(false, PlayerGroupAll());
 	
-	Wait(5.0, c_timeReal);
+	//Wait(5.0, c_timeReal);
 	
 	// True means SHOW the ui... counter intuitive.
-	libNtve_gf_HideGameUI(true, PlayerGroupAll());
+	//libNtve_gf_HideGameUI(true, PlayerGroupAll());
+	
+	Wait(5.0, c_timeReal);
+	
+	// Show the resource vote dialog.
+	//DialogControlSetVisible(gv_ResourceVoteDialog, PlayerGroupAll(), true); <---- DIALOG CONTROL is for the ITEMS not the DIALOG!
+	DialogSetVisible(gv_ResourceVoteDialog, PlayerGroupAll(), true);
+	
 	
 	return true;
 }

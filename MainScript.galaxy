@@ -15,8 +15,7 @@ include "TriggerActions.galaxy"
 //--------------------------------------------------------------------------------------------------
 
 void InitTriggers() {
-    gt_SetupGame = TriggerCreate("setupGame");
-    TriggerAddEventMapInit(gt_SetupGame);
+    gt_SetupGame_init();
 	
 	
 }

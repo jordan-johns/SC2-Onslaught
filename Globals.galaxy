@@ -10,27 +10,30 @@ include "TriggerLibs/NativeLib"
 
 //Objects
 
-//Triggers
-
 // Variables
+int gv_numPlayers;
 int gv_ResourceVoteDialog;
 int[3] gv_ResourceVoteButtons;
+int[3] gv_ResourceVoteTally;
 
 
 //--------------------------------------------------------------------------------------------------
 // Globals Initialization
 //--------------------------------------------------------------------------------------------------
-void InitGlobals () {
-	//int init_i;
+
+void InitResourceVoteTally()
+{
+	int i;
+	for (i = 0; i < 3; i = i + 1)
+	{
+		gv_ResourceVoteTally[i] = 0;
+	}
 	
-	//init_i = 0;
-    //while (init_i < 3) {
-    //    gv_ResourceVoteButtons[init_i] = c_invalidDialogControlId;
-    //    init_i = init_i + 1;
-    //}
-	
-	//gv_ResourceVoteDialog = c_invalidDialogId;
-	
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Resource Vote Tally Initialized ==="));
+}
+
+void InitResourceVoteDialog()
+{
 	// Initialize the resource vote dialog.
 	DialogCreate(650, 200, c_anchorCenter, 0, 0, true);
 	DialogSetTitle(DialogLastCreated(), StringToText("Resource Vote"));
@@ -46,6 +49,18 @@ void InitGlobals () {
 	libNtve_gf_CreateDialogItemButton(gv_ResourceVoteDialog, 175, 75, c_anchorCenter, 200, 25, StringToText(""), StringToText("Stimulus Package"), "");
 	gv_ResourceVoteButtons[2] = DialogControlLastCreated();
 	
-	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Finished initing dialog"));
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Resource Vote Dialog Initialized ==="));
+}
+
+void InitGlobals()
+{
+	// Store the number of currently active players.
+	gv_numPlayers = PlayerGroupCount(PlayerGroupActive());
+
+	// Initialize the resource vote tally to zero.
+	InitResourceVoteTally();
+	
+	// Initialize the resource vote dialog so that it is ready to display.
+	InitResourceVoteDialog();
 }
 

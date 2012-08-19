@@ -16,23 +16,23 @@ include "TriggerActions.galaxy"
 
 void InitTriggers() {
     gt_SetupGame_init();
-	
-	
+	gt_ResourceVote_init();
+	gt_VoteComplete_init();
 }
 
 //--------------------------------------------------------------------------------------------------
 // Library Initialization
 //--------------------------------------------------------------------------------------------------
-void InitLibs () {
+void InitLibs() {
     libNtve_InitLib();
 }
 
 //--------------------------------------------------------------------------------------------------
 // Map Initialization
 //--------------------------------------------------------------------------------------------------
-void Main () {
+void Main() {
     InitLibs();
-    InitTriggers();
-    InitGlobals();
+	InitGlobals();
+	InitTriggers();
 }
 

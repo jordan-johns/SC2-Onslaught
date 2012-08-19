@@ -12,6 +12,8 @@ include "Globals.galaxy"
 
 // Triggers
 trigger gt_SetupGame;
+trigger gt_ResourceVote;
+trigger gt_VoteComplete;
 
 //--------------------------------------------------------------------------------------------------
 // Triggers: Initialization
@@ -21,6 +23,19 @@ void gt_SetupGame_init()
 {
 	gt_SetupGame = TriggerCreate("gt_SetupGame_Func");
     TriggerAddEventMapInit(gt_SetupGame);
+}
+
+void gt_ResourceVote_init()
+{
+	gt_ResourceVote = TriggerCreate("gt_ResourceVote_Func");
+	// Trigger will fire each time a vote is made.
+	TriggerAddEventDialogControl(gt_ResourceVote, c_playerAny, c_invalidDialogControlId, c_triggerControlEventTypeClick);
+}
+
+void gt_VoteComplete_init()
+{
+	gt_VoteComplete = TriggerCreate("gt_VoteComplete_Func");
+	TriggerAddEventGeneric(gt_VoteComplete, "Vote Complete");
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -43,6 +58,71 @@ bool gt_SetupGame_Func(bool testConds, bool runActions)
 	//DialogControlSetVisible(gv_ResourceVoteDialog, PlayerGroupAll(), true); <---- DIALOG CONTROL is for the ITEMS not the DIALOG!
 	DialogSetVisible(gv_ResourceVoteDialog, PlayerGroupAll(), true);
 	
+	
+	return true;
+}
+
+bool gt_ResourceVote_Func(bool testConds, bool runActions)
+{	
+	// Get the last used dialog (the one that was just used to trigger the event).
+	int dialogItemUsed = EventDialogControl();
+	
+	// Get the player that used the dialog.
+	int triggeringPlayer = EventPlayer();
+	int i;
+	
+	// Recession Vote.
+	if (dialogItemUsed == gv_ResourceVoteButtons[0])
+	{
+		gv_ResourceVoteTally[0] = gv_ResourceVoteTally[0] + 1;
+		UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Player [" + IntToString(triggeringPlayer) + "] voted for [Recession]"));
+	}
+	// Standard Vote.
+	else if (dialogItemUsed == gv_ResourceVoteButtons[1])
+	{
+		gv_ResourceVoteTally[1] = gv_ResourceVoteTally[1] + 1;
+		UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Player [" + IntToString(triggeringPlayer) + "] voted for [Standard]"));
+	}
+	// Stimulus Vote.
+	else if (dialogItemUsed == gv_ResourceVoteButtons[2])
+	{
+		gv_ResourceVoteTally[2] = gv_ResourceVoteTally[2] + 1;
+		UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Player [" + IntToString(triggeringPlayer) + "] voted for [Stimulus Package]"));
+	}
+	// Something stupid was clicked... fail.
+	else
+	{
+		return false;
+	}
+	
+	// Disable the voting buttons once a player has made a vote.
+	for (i = 0; i < 3; i = i + 1)
+	{
+		DialogControlSetEnabled(gv_ResourceVoteButtons[i], PlayerGroupSingle(triggeringPlayer), false);
+	}
+	
+	// Check if everyone has voted, if so end the vote by firing off the "Vote Complete" event.
+	if (gv_ResourceVoteTally[0] + gv_ResourceVoteTally[1] + gv_ResourceVoteTally[2] >= gv_numPlayers)
+	{
+		TriggerSendEvent("Vote Complete");
+	}
+	
+	return true;
+}
+
+bool gt_VoteComplete_Func(bool testConds, bool runActions)
+{
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Vote Complete ==="));
+	
+	Wait(3.0, c_timeReal);
+	
+	// Destroy voting dialog, since it is no longer of use.
+	DialogDestroyAll();
+	
+	Wait(2.0, c_timeReal);
+	
+	// Show the game UI now that voting is done.
+	libNtve_gf_HideGameUI(true, PlayerGroupAll());
 	
 	return true;
 }

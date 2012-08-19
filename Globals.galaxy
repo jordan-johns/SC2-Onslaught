@@ -15,6 +15,9 @@ int gv_numPlayers;
 int gv_ResourceVoteDialog;
 int[3] gv_ResourceVoteButtons;
 int[3] gv_ResourceVoteTally;
+bool gv_RecessionMode;
+bool gv_StandardMode;
+bool gv_StimulusMode;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -54,6 +57,8 @@ void InitResourceVoteDialog()
 
 void InitGlobals()
 {
+	int i;
+	
 	// Store the number of currently active players.
 	gv_numPlayers = PlayerGroupCount(PlayerGroupActive());
 
@@ -62,5 +67,10 @@ void InitGlobals()
 	
 	// Initialize the resource vote dialog so that it is ready to display.
 	InitResourceVoteDialog();
+	
+	// Initialize the game modes.
+	gv_RecessionMode = false;
+	gv_StandardMode = false;
+	gv_StimulusMode = false;
 }
 

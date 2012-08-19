@@ -112,7 +112,26 @@ bool gt_ResourceVote_Func(bool testConds, bool runActions)
 
 bool gt_VoteComplete_Func(bool testConds, bool runActions)
 {
+	int i;
+	int player;
 	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Vote Complete ==="));
+	
+	// Tally up the votes, determine the game mode.
+	if (gv_ResourceVoteTally[0] > gv_ResourceVoteTally[1] && gv_ResourceVoteTally[0] > gv_ResourceVoteTally[2])
+	{
+		UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Recession Mode ==="));
+		gv_RecessionMode = true;
+	}
+	else if (gv_ResourceVoteTally[1] > gv_ResourceVoteTally[0] && gv_ResourceVoteTally[1] > gv_ResourceVoteTally[2])
+	{
+		UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Standard Mode ==="));
+		gv_StandardMode = true;
+	}
+	else if (gv_ResourceVoteTally[2] > gv_ResourceVoteTally[0] && gv_ResourceVoteTally[2] > gv_ResourceVoteTally[1])
+	{
+		UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Stimulus Mode ==="));
+		gv_StimulusMode = true;
+	}
 	
 	Wait(3.0, c_timeReal);
 	
@@ -123,6 +142,31 @@ bool gt_VoteComplete_Func(bool testConds, bool runActions)
 	
 	// Show the game UI now that voting is done.
 	libNtve_gf_HideGameUI(true, PlayerGroupAll());
+	
+	// Give players starting resources based on the vote outcome.
+	for (i = 1; i <= PlayerGroupCount(PlayerGroupActive()); i = i + 1)
+	{
+		// Retrieve the player at index "i" in active players.
+		player = PlayerGroupPlayer(PlayerGroupActive(), i);
+		
+		UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Player resource modification: " + IntToString(player)));
+		
+		if (gv_RecessionMode == true)
+		{
+			UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Set 0 ==="));
+			PlayerModifyPropertyInt(player, c_playerPropMinerals, c_playerPropOperSetTo, 0);
+		}
+		else if (gv_StandardMode == true)
+		{
+			UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Set 50 ==="));
+			PlayerModifyPropertyInt(player, c_playerPropMinerals, c_playerPropOperSetTo, 50);
+		}
+		else if (gv_StimulusMode == true)
+		{
+			UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Set 400 ==="));
+			PlayerModifyPropertyInt(player, c_playerPropMinerals, c_playerPropOperSetTo, 400);
+		}
+	}
 	
 	return true;
 }

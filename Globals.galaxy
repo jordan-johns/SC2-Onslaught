@@ -18,6 +18,13 @@ int[3] gv_ResourceVoteTally;
 bool gv_RecessionMode;
 bool gv_StandardMode;
 bool gv_StimulusMode;
+playergroup gv_RedTeam;
+playergroup gv_BlueTeam;
+region gv_TopMid;
+region gv_TopRight;
+region gv_Mid;
+region gv_BottomMid;
+region gv_BottomLeft;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -55,6 +62,24 @@ void InitResourceVoteDialog()
 	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Resource Vote Dialog Initialized ==="));
 }
 
+void InitRedTeam()
+{
+	int i;
+	for (i = 1; i <= 4; i = i + 1)
+	{
+		PlayerGroupAdd(gv_RedTeam, i);
+	}
+}
+
+void InitBlueTeam()
+{
+	int i;
+	for (i = 5; i <= 8; i = i + 1)
+	{
+		PlayerGroupAdd(gv_BlueTeam, i);
+	}
+}
+
 void InitGlobals()
 {
 	int i;
@@ -72,5 +97,9 @@ void InitGlobals()
 	gv_RecessionMode = false;
 	gv_StandardMode = false;
 	gv_StimulusMode = false;
+	
+	// Initialize the teams into groups for easy management.
+	InitRedTeam();
+	InitBlueTeam();
 }
 

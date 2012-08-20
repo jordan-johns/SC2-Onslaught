@@ -19,6 +19,12 @@ bool gv_RecessionMode;
 bool gv_StandardMode;
 bool gv_StimulusMode;
 
+bool gv_TopMidLock;
+bool gv_TopRightLock;
+bool gv_MidLock;
+bool gv_BottomMidLock;
+bool gv_BottomLeftLock;
+
 playergroup gv_RedTeam;
 playergroup gv_BlueTeam;
 
@@ -27,6 +33,12 @@ region gv_TopRight;
 region gv_Mid;
 region gv_BottomMid;
 region gv_BottomLeft;
+
+unitgroup gv_TopMidUnits;
+unitgroup gv_TopRightUnits;
+unitgroup gv_MidUnits;
+unitgroup gv_BottomMidUnits;
+unitgroup gv_BottomLeftUnits;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -103,5 +115,20 @@ void InitGlobals()
 	// Initialize the teams into groups for easy management.
 	InitRedTeam();
 	InitBlueTeam();
+	
+	// Initialize the unit groups for the power node regions to be empty.
+	gv_TopMidUnits = UnitGroupEmpty();
+	gv_TopRightUnits = UnitGroupEmpty();
+	gv_MidUnits = UnitGroupEmpty();
+	gv_BottomMidUnits = UnitGroupEmpty();
+	gv_BottomLeftUnits = UnitGroupEmpty();
+	
+	// Initialize the locks to the unlock state for later concurrency control when adding units to regions.
+	gv_TopMidLock = false;
+	gv_TopRightLock = false;
+	gv_MidLock = false;
+	gv_BottomMidLock = false;
+	gv_BottomLeftLock = false;
+	
 }
 

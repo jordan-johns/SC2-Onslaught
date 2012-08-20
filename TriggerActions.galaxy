@@ -30,6 +30,7 @@ trigger gt_BottomMidControlLoss;
 trigger gt_BottomLeftControlGain;
 trigger gt_BottomLeftControlLoss;
 
+
 //--------------------------------------------------------------------------------------------------
 // Triggers: Initialization
 //--------------------------------------------------------------------------------------------------
@@ -62,7 +63,7 @@ void gt_TopMidControlGain_init()
 void gt_TopMidControlLoss_init()
 {
 	gt_TopMidControlLoss = TriggerCreate("gt_TopMidControlLoss_Func");
-	TriggerAddEventUnitRegion(gt_TopMidControlLoss, null, gv_TopMid, true);
+	TriggerAddEventUnitRegion(gt_TopMidControlLoss, null, gv_TopMid, false);
 }
 
 void gt_TopRightControlGain_init()
@@ -74,7 +75,7 @@ void gt_TopRightControlGain_init()
 void gt_TopRightControlLoss_init()
 {
 	gt_TopRightControlLoss = TriggerCreate("gt_TopRightControlLoss_Func");
-	TriggerAddEventUnitRegion(gt_TopRightControlLoss, null, gv_TopRight, true);
+	TriggerAddEventUnitRegion(gt_TopRightControlLoss, null, gv_TopRight, false);
 }
 
 void gt_MidControlGain_init()
@@ -86,7 +87,7 @@ void gt_MidControlGain_init()
 void gt_MidControlLoss_init()
 {
 	gt_MidControlLoss = TriggerCreate("gt_MidControlLoss_Func");
-	TriggerAddEventUnitRegion(gt_MidControlLoss, null, gv_Mid, true);
+	TriggerAddEventUnitRegion(gt_MidControlLoss, null, gv_Mid, false);
 }
 
 void gt_BottomMidControlGain_init()
@@ -98,7 +99,7 @@ void gt_BottomMidControlGain_init()
 void gt_BottomMidControlLoss_init()
 {
 	gt_BottomMidControlLoss = TriggerCreate("gt_BottomMidControlLoss_Func");
-	TriggerAddEventUnitRegion(gt_BottomMidControlLoss, null, gv_BottomMid, true);
+	TriggerAddEventUnitRegion(gt_BottomMidControlLoss, null, gv_BottomMid, false);
 }
 
 void gt_BottomLeftControlGain_init()
@@ -110,7 +111,7 @@ void gt_BottomLeftControlGain_init()
 void gt_BottomLeftControlLoss_init()
 {
 	gt_BottomLeftControlLoss = TriggerCreate("gt_BottomLeftControlLoss_Func");
-	TriggerAddEventUnitRegion(gt_BottomLeftControlLoss, null, gv_BottomLeft, true);
+	TriggerAddEventUnitRegion(gt_BottomLeftControlLoss, null, gv_BottomLeft, false);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -248,60 +249,150 @@ bool gt_VoteComplete_Func(bool testConds, bool runActions)
 
 bool gt_TopMidControlGain_Func(bool testConds, bool runActions)
 {
-
+	// Prevent modification to unit group until lock released. (Spin until unlocked)
+	while (gv_TopMidLock)
+	{
+		Wait(1.0, c_timeGame);
+	}
+	
+	gv_TopMidLock = true;
+	UnitGroupAdd(gv_TopMidUnits, EventUnit());
+	gv_TopMidLock = false;
+	
 	return true;
 }
 
 bool gt_TopMidControlLoss_Func(bool testConds, bool runActions)
 {
-
+	// Prevent modification to unit group until lock released. (Spin until unlocked)
+	while (gv_TopMidLock)
+	{
+		Wait(1.0, c_timeGame);
+	}
+	
+	gv_TopMidLock = true;
+	UnitGroupRemove(gv_TopMidUnits, EventUnit());
+	gv_TopMidLock = false;
+	
 	return true;
 }
 
 bool gt_TopRightControlGain_Func(bool testConds, bool runActions)
 {
-
+	// Prevent modification to unit group until lock released. (Spin until unlocked)
+	while (gv_TopRightLock)
+	{
+		Wait(1.0, c_timeGame);
+	}
+	
+	gv_TopRightLock = true;
+	UnitGroupAdd(gv_TopRightUnits, EventUnit());
+	gv_TopRightLock = false;
+	
 	return true;
 }
 
 bool gt_TopRightControlLoss_Func(bool testConds, bool runActions)
 {
-
+	// Prevent modification to unit group until lock released. (Spin until unlocked)
+	while (gv_TopRightLock)
+	{
+		Wait(1.0, c_timeGame);
+	}
+	
+	gv_TopRightLock = true;
+	UnitGroupRemove(gv_TopRightUnits, EventUnit());
+	gv_TopRightLock = false;
+	
 	return true;
 }
 
 bool gt_MidControlGain_Func(bool testConds, bool runActions)
 {
-
+	// Prevent modification to unit group until lock released. (Spin until unlocked)
+	while (gv_MidLock)
+	{
+		Wait(1.0, c_timeGame);
+	}
+	
+	gv_MidLock = true;
+	UnitGroupAdd(gv_MidUnits, EventUnit());
+	gv_MidLock = false;
+	
 	return true;
 }
 
 bool gt_MidControlLoss_Func(bool testConds, bool runActions)
 {
-
+	// Prevent modification to unit group until lock released. (Spin until unlocked)
+	while (gv_MidLock)
+	{
+		Wait(1.0, c_timeGame);
+	}
+	
+	gv_MidLock = true;
+	UnitGroupRemove(gv_MidUnits, EventUnit());
+	gv_MidLock = false;
+	
 	return true;
 }
 
 bool gt_BottomMidControlGain_Func(bool testConds, bool runActions)
 {
-
+	// Prevent modification to unit group until lock released. (Spin until unlocked)
+	while (gv_BottomMidLock)
+	{
+		Wait(1.0, c_timeGame);
+	}
+	
+	gv_BottomMidLock = true;
+	UnitGroupAdd(gv_BottomMidUnits, EventUnit());
+	gv_BottomMidLock = false;
+	
 	return true;
 }
 
 bool gt_BottomMidControlLoss_Func(bool testConds, bool runActions)
 {
-
+	// Prevent modification to unit group until lock released. (Spin until unlocked)
+	while (gv_BottomMidLock)
+	{
+		Wait(1.0, c_timeGame);
+	}
+	
+	gv_BottomMidLock = true;
+	UnitGroupRemove(gv_BottomMidUnits, EventUnit());
+	gv_BottomMidLock = false;
+	
 	return true;
 }
 
 bool gt_BottomLeftControlGain_Func(bool testConds, bool runActions)
 {
-
+	// Prevent modification to unit group until lock released. (Spin until unlocked)
+	while (gv_BottomLeftLock)
+	{
+		Wait(1.0, c_timeGame);
+	}
+	
+	gv_BottomLeftLock = true;
+	UnitGroupAdd(gv_BottomLeftUnits, EventUnit());
+	gv_BottomLeftLock = false;
+	
 	return true;
 }
 
 bool gt_BottomLeftControlLoss_Func(bool testConds, bool runActions)
 {
-
+	// Prevent modification to unit group until lock released. (Spin until unlocked)
+	while (gv_BottomLeftLock)
+	{
+		Wait(1.0, c_timeGame);
+	}
+	
+	gv_BottomLeftLock = true;
+	UnitGroupRemove(gv_BottomLeftUnits, EventUnit());
+	gv_BottomLeftLock = false;
+	
 	return true;
 }

@@ -1,6 +1,6 @@
 //==================================================================================================
 //
-// <SC2 - Onslaught> TriggerActions
+// <SC2 - Onslaught> Triggers
 //
 // Name:  <SC2 - Onslaught>
 // Author: <Jordan Johns>
@@ -8,7 +8,7 @@
 //==================================================================================================
 
 include "TriggerLibs/NativeLib"
-include "Globals.galaxy"
+include "SC2-ONS_Globals.galaxy"
 
 // Triggers
 trigger gt_SetupGame;

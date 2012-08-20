@@ -138,5 +138,7 @@ void InitGlobals()
 	gv_BottomMid = RegionFromId(4);
 	gv_BottomLeft = RegionFromId(5);
 	
+	
+	
 }
 

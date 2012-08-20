@@ -1,14 +1,14 @@
 //==================================================================================================
 //
-// <SC2 - Onslaught> MainScript
+// <SC2 - Onslaught> Main
 //
 // Name:   <SC2 - Onslaught>
 // Author: <Jordan Johns>
 //
 //==================================================================================================
 include "TriggerLibs/NativeLib"
-include "Globals.galaxy"
-include "TriggerActions.galaxy"
+include "SC2-ONS_Globals.galaxy"
+include "SC2-ONS_Triggers.galaxy"
 
 //--------------------------------------------------------------------------------------------------
 // Trigger: Initialization

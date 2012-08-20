@@ -15,6 +15,7 @@ int gv_numPlayers;
 int gv_ResourceVoteDialog;
 int[3] gv_ResourceVoteButtons;
 int[3] gv_ResourceVoteTally;
+
 bool gv_RecessionMode;
 bool gv_StandardMode;
 bool gv_StimulusMode;
@@ -129,6 +130,13 @@ void InitGlobals()
 	gv_MidLock = false;
 	gv_BottomMidLock = false;
 	gv_BottomLeftLock = false;
+	
+	// Debugging (initializing the regions to hard coded spots on map).
+	gv_TopMid = RegionFromId(1);
+	gv_TopRight = RegionFromId(2);
+	gv_Mid = RegionFromId(3);
+	gv_BottomMid = RegionFromId(4);
+	gv_BottomLeft = RegionFromId(5);
 	
 }
 

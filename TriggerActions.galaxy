@@ -30,6 +30,8 @@ trigger gt_BottomMidControlLoss;
 trigger gt_BottomLeftControlGain;
 trigger gt_BottomLeftControlLoss;
 
+trigger gt_PowerNodeControlChecker;
+
 
 //--------------------------------------------------------------------------------------------------
 // Triggers: Initialization
@@ -112,6 +114,12 @@ void gt_BottomLeftControlLoss_init()
 {
 	gt_BottomLeftControlLoss = TriggerCreate("gt_BottomLeftControlLoss_Func");
 	TriggerAddEventUnitRegion(gt_BottomLeftControlLoss, null, gv_BottomLeft, false);
+}
+
+void gt_PowerNodeControlChecker_init()
+{
+	gt_PowerNodeControlChecker = TriggerCreate("gt_PowerNodeControlChecker_Func");
+	TriggerAddEventTimePeriodic(gt_PowerNodeControlChecker, 3.0, c_timeGame);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -249,6 +257,7 @@ bool gt_VoteComplete_Func(bool testConds, bool runActions)
 
 bool gt_TopMidControlGain_Func(bool testConds, bool runActions)
 {
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Entered Top Mid ==="));
 	// Prevent modification to unit group until lock released. (Spin until unlocked)
 	while (gv_TopMidLock)
 	{
@@ -264,6 +273,7 @@ bool gt_TopMidControlGain_Func(bool testConds, bool runActions)
 
 bool gt_TopMidControlLoss_Func(bool testConds, bool runActions)
 {
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Left Top Mid ==="));
 	// Prevent modification to unit group until lock released. (Spin until unlocked)
 	while (gv_TopMidLock)
 	{
@@ -279,6 +289,7 @@ bool gt_TopMidControlLoss_Func(bool testConds, bool runActions)
 
 bool gt_TopRightControlGain_Func(bool testConds, bool runActions)
 {
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Entered Top Right ==="));
 	// Prevent modification to unit group until lock released. (Spin until unlocked)
 	while (gv_TopRightLock)
 	{
@@ -294,6 +305,7 @@ bool gt_TopRightControlGain_Func(bool testConds, bool runActions)
 
 bool gt_TopRightControlLoss_Func(bool testConds, bool runActions)
 {
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Left Top Right ==="));
 	// Prevent modification to unit group until lock released. (Spin until unlocked)
 	while (gv_TopRightLock)
 	{
@@ -309,6 +321,7 @@ bool gt_TopRightControlLoss_Func(bool testConds, bool runActions)
 
 bool gt_MidControlGain_Func(bool testConds, bool runActions)
 {
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Entered Mid ==="));
 	// Prevent modification to unit group until lock released. (Spin until unlocked)
 	while (gv_MidLock)
 	{
@@ -324,6 +337,7 @@ bool gt_MidControlGain_Func(bool testConds, bool runActions)
 
 bool gt_MidControlLoss_Func(bool testConds, bool runActions)
 {
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Left Mid ==="));
 	// Prevent modification to unit group until lock released. (Spin until unlocked)
 	while (gv_MidLock)
 	{
@@ -339,6 +353,7 @@ bool gt_MidControlLoss_Func(bool testConds, bool runActions)
 
 bool gt_BottomMidControlGain_Func(bool testConds, bool runActions)
 {
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Entered Bottom Mid ==="));
 	// Prevent modification to unit group until lock released. (Spin until unlocked)
 	while (gv_BottomMidLock)
 	{
@@ -354,6 +369,7 @@ bool gt_BottomMidControlGain_Func(bool testConds, bool runActions)
 
 bool gt_BottomMidControlLoss_Func(bool testConds, bool runActions)
 {
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Left Bottom Mid ==="));
 	// Prevent modification to unit group until lock released. (Spin until unlocked)
 	while (gv_BottomMidLock)
 	{
@@ -369,6 +385,7 @@ bool gt_BottomMidControlLoss_Func(bool testConds, bool runActions)
 
 bool gt_BottomLeftControlGain_Func(bool testConds, bool runActions)
 {
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Entered Bottom Left ==="));
 	// Prevent modification to unit group until lock released. (Spin until unlocked)
 	while (gv_BottomLeftLock)
 	{
@@ -384,6 +401,7 @@ bool gt_BottomLeftControlGain_Func(bool testConds, bool runActions)
 
 bool gt_BottomLeftControlLoss_Func(bool testConds, bool runActions)
 {
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Left Bottom Left ==="));
 	// Prevent modification to unit group until lock released. (Spin until unlocked)
 	while (gv_BottomLeftLock)
 	{
@@ -393,6 +411,21 @@ bool gt_BottomLeftControlLoss_Func(bool testConds, bool runActions)
 	gv_BottomLeftLock = true;
 	UnitGroupRemove(gv_BottomLeftUnits, EventUnit());
 	gv_BottomLeftLock = false;
+	
+	return true;
+}
+
+bool gt_PowerNodeControlChecker_Func(bool testConds, bool runActions)
+{
+	int topMidUnits = UnitGroupCount(gv_TopMidUnits, c_unitCountAlive);
+	int topRightUnits = UnitGroupCount(gv_TopRightUnits, c_unitCountAlive);
+	int midUnits = UnitGroupCount(gv_MidUnits, c_unitCountAlive);
+	int bottomMidUnits = UnitGroupCount(gv_BottomMidUnits, c_unitCountAlive);
+	int bottomLeftUnits = UnitGroupCount(gv_BottomLeftUnits, c_unitCountAlive);
+	
+	//UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("=== Power Node Check ==="));
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("TM: " + IntToString(topMidUnits) + ", TR: " + IntToString(topRightUnits) + ", M: " + IntToString(midUnits) + ", BM: " + IntToString(bottomMidUnits) + ", BL: " + IntToString(bottomLeftUnits)));
+	
 	
 	return true;
 }

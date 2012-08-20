@@ -18,8 +18,10 @@ int[3] gv_ResourceVoteTally;
 bool gv_RecessionMode;
 bool gv_StandardMode;
 bool gv_StimulusMode;
+
 playergroup gv_RedTeam;
 playergroup gv_BlueTeam;
+
 region gv_TopMid;
 region gv_TopRight;
 region gv_Mid;

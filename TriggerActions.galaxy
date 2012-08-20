@@ -15,6 +15,21 @@ trigger gt_SetupGame;
 trigger gt_ResourceVote;
 trigger gt_VoteComplete;
 
+trigger gt_TopMidControlGain;
+trigger gt_TopMidControlLoss;
+
+trigger gt_TopRightControlGain;
+trigger gt_TopRightControlLoss;
+
+trigger gt_MidControlGain;
+trigger gt_MidControlLoss;
+
+trigger gt_BottomMidControlGain;
+trigger gt_BottomMidControlLoss;
+
+trigger gt_BottomLeftControlGain;
+trigger gt_BottomLeftControlLoss;
+
 //--------------------------------------------------------------------------------------------------
 // Triggers: Initialization
 //--------------------------------------------------------------------------------------------------
@@ -36,6 +51,66 @@ void gt_VoteComplete_init()
 {
 	gt_VoteComplete = TriggerCreate("gt_VoteComplete_Func");
 	TriggerAddEventGeneric(gt_VoteComplete, "Vote Complete");
+}
+
+void gt_TopMidControlGain_init()
+{
+	gt_TopMidControlGain = TriggerCreate("gt_TopMidControlGain_Func");
+	TriggerAddEventUnitRegion(gt_TopMidControlGain, null, gv_TopMid, true);
+}
+
+void gt_TopMidControlLoss_init()
+{
+	gt_TopMidControlLoss = TriggerCreate("gt_TopMidControlLoss_Func");
+	TriggerAddEventUnitRegion(gt_TopMidControlLoss, null, gv_TopMid, true);
+}
+
+void gt_TopRightControlGain_init()
+{
+	gt_TopRightControlGain = TriggerCreate("gt_TopRightControlGain_Func");
+	TriggerAddEventUnitRegion(gt_TopRightControlGain, null, gv_TopRight, true);
+}
+
+void gt_TopRightControlLoss_init()
+{
+	gt_TopRightControlLoss = TriggerCreate("gt_TopRightControlLoss_Func");
+	TriggerAddEventUnitRegion(gt_TopRightControlLoss, null, gv_TopRight, true);
+}
+
+void gt_MidControlGain_init()
+{
+	gt_MidControlGain = TriggerCreate("gt_MidControlGain_Func");
+	TriggerAddEventUnitRegion(gt_MidControlGain, null, gv_Mid, true);
+}
+
+void gt_MidControlLoss_init()
+{
+	gt_MidControlLoss = TriggerCreate("gt_MidControlLoss_Func");
+	TriggerAddEventUnitRegion(gt_MidControlLoss, null, gv_Mid, true);
+}
+
+void gt_BottomMidControlGain_init()
+{
+	gt_BottomMidControlGain = TriggerCreate("gt_BottomMidControlGain_Func");
+	TriggerAddEventUnitRegion(gt_BottomMidControlGain, null, gv_BottomMid, true);
+}
+
+void gt_BottomMidControlLoss_init()
+{
+	gt_BottomMidControlLoss = TriggerCreate("gt_BottomMidControlLoss_Func");
+	TriggerAddEventUnitRegion(gt_BottomMidControlLoss, null, gv_BottomMid, true);
+}
+
+void gt_BottomLeftControlGain_init()
+{
+	gt_BottomLeftControlGain = TriggerCreate("gt_BottomLeftControlGain_Func");
+	TriggerAddEventUnitRegion(gt_BottomLeftControlGain, null, gv_BottomLeft, true);
+}
+
+void gt_BottomLeftControlLoss_init()
+{
+	gt_BottomLeftControlLoss = TriggerCreate("gt_BottomLeftControlLoss_Func");
+	TriggerAddEventUnitRegion(gt_BottomLeftControlLoss, null, gv_BottomLeft, true);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -168,5 +243,65 @@ bool gt_VoteComplete_Func(bool testConds, bool runActions)
 		}
 	}
 	
+	return true;
+}
+
+bool gt_TopMidControlGain_Func(bool testConds, bool runActions)
+{
+
+	return true;
+}
+
+bool gt_TopMidControlLoss_Func(bool testConds, bool runActions)
+{
+
+	return true;
+}
+
+bool gt_TopRightControlGain_Func(bool testConds, bool runActions)
+{
+
+	return true;
+}
+
+bool gt_TopRightControlLoss_Func(bool testConds, bool runActions)
+{
+
+	return true;
+}
+
+bool gt_MidControlGain_Func(bool testConds, bool runActions)
+{
+
+	return true;
+}
+
+bool gt_MidControlLoss_Func(bool testConds, bool runActions)
+{
+
+	return true;
+}
+
+bool gt_BottomMidControlGain_Func(bool testConds, bool runActions)
+{
+
+	return true;
+}
+
+bool gt_BottomMidControlLoss_Func(bool testConds, bool runActions)
+{
+
+	return true;
+}
+
+bool gt_BottomLeftControlGain_Func(bool testConds, bool runActions)
+{
+
+	return true;
+}
+
+bool gt_BottomLeftControlLoss_Func(bool testConds, bool runActions)
+{
+
 	return true;
 }

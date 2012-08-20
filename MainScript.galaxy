@@ -14,23 +14,37 @@ include "TriggerActions.galaxy"
 // Trigger: Initialization
 //--------------------------------------------------------------------------------------------------
 
-void InitTriggers() {
+void InitTriggers()
+{
     gt_SetupGame_init();
 	gt_ResourceVote_init();
 	gt_VoteComplete_init();
+	
+	gt_TopMidControlGain_init();
+	gt_TopMidControlLoss_init();
+	gt_TopRightControlGain_init();
+	gt_TopRightControlLoss_init();
+	gt_MidControlGain_init();
+	gt_MidControlLoss_init();
+	gt_BottomMidControlGain_init();
+	gt_BottomMidControlLoss_init();
+	gt_BottomLeftControlGain_init();
+	gt_BottomLeftControlLoss_init();
 }
 
 //--------------------------------------------------------------------------------------------------
 // Library Initialization
 //--------------------------------------------------------------------------------------------------
-void InitLibs() {
+void InitLibs()
+{
     libNtve_InitLib();
 }
 
 //--------------------------------------------------------------------------------------------------
 // Map Initialization
 //--------------------------------------------------------------------------------------------------
-void Main() {
+void Main()
+{
     InitLibs();
 	InitGlobals();
 	InitTriggers();

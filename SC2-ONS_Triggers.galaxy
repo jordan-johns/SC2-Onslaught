@@ -32,6 +32,12 @@ trigger gt_BottomLeftControlLoss;
 
 trigger gt_PowerNodeControlChecker;
 
+trigger gt_TopMidUpdate;
+trigger gt_TopRightUpdate;
+trigger gt_MidUpdate;
+trigger gt_BottomMidUpdate;
+trigger gt_BottomLeftUpdate;
+
 
 //--------------------------------------------------------------------------------------------------
 // Triggers: Initialization
@@ -122,6 +128,36 @@ void gt_PowerNodeControlChecker_init()
 	TriggerAddEventTimePeriodic(gt_PowerNodeControlChecker, 3.0, c_timeGame);
 }
 
+void gt_TopMidUpdate_init()
+{
+	gt_TopMidUpdate = TriggerCreate("gt_TopMidUpdate_Func");
+	TriggerAddEventTimePeriodic(gt_TopMidUpdate, 1.0, c_timeGame);
+}
+
+void gt_TopRightUpdate_init()
+{
+	gt_TopRightUpdate = TriggerCreate("gt_TopRightUpdate_Func");
+	TriggerAddEventTimePeriodic(gt_TopRightUpdate, 1.0, c_timeGame);
+}
+
+void gt_MidUpdate_init()
+{
+	gt_MidUpdate = TriggerCreate("gt_MidUpdate_Func");
+	TriggerAddEventTimePeriodic(gt_MidUpdate, 1.0, c_timeGame);
+}
+
+void gt_BottomMidUpdate_init()
+{
+	gt_BottomMidUpdate = TriggerCreate("gt_BottomMidUpdate_Func");
+	TriggerAddEventTimePeriodic(gt_BottomMidUpdate, 1.0, c_timeGame);
+}
+
+void gt_BottomLeftUpdate_init()
+{
+	gt_BottomLeftUpdate = TriggerCreate("gt_BottomLeftUpdate_Func");
+	TriggerAddEventTimePeriodic(gt_BottomLeftUpdate, 1.0, c_timeGame);
+}
+
 //--------------------------------------------------------------------------------------------------
 // Triggers: Actions
 //--------------------------------------------------------------------------------------------------
@@ -194,6 +230,47 @@ bool gt_ResourceVote_Func(bool testConds, bool runActions)
 	return true;
 }
 
+void setupLeaderboard()
+{
+	BoardCreate(2, 5, StringToText("Power Node Control"), Color(100.00, 100.00, 100.00));
+	gv_PowerNodeLeaderboard = BoardLastCreated();
+	
+	BoardSetColumnWidth(gv_PowerNodeLeaderboard, 1, 12.5);
+	BoardSetColumnWidth(gv_PowerNodeLeaderboard, 2, 17.5);
+	
+	// BoardItemSetAlignment(gv_PowerNodeLeaderboard, 1, 1, c_alignLeft);
+	// BoardItemSetAlignment(gv_PowerNodeLeaderboard, 1, 2, c_alignLeft);
+	// BoardItemSetAlignment(gv_PowerNodeLeaderboard, 1, 3, c_alignLeft);
+	// BoardItemSetAlignment(gv_PowerNodeLeaderboard, 1, 4, c_alignLeft);
+	// BoardItemSetAlignment(gv_PowerNodeLeaderboard, 1, 5, c_alignLeft);
+	
+	BoardItemSetText(gv_PowerNodeLeaderboard, 1, 1, StringToText("Top Mid"));
+	BoardItemSetText(gv_PowerNodeLeaderboard, 1, 2, StringToText("Top Right"));
+	BoardItemSetText(gv_PowerNodeLeaderboard, 1, 3, StringToText("Mid"));
+	BoardItemSetText(gv_PowerNodeLeaderboard, 1, 4, StringToText("Bottom Mid"));
+	BoardItemSetText(gv_PowerNodeLeaderboard, 1, 5, StringToText("Bottom Left"));
+	
+	BoardItemSetProgressRange(gv_PowerNodeLeaderboard, 2, 1, 0.0, 100.0);
+	BoardItemSetProgressRange(gv_PowerNodeLeaderboard, 2, 2, 0.0, 100.0);
+	BoardItemSetProgressRange(gv_PowerNodeLeaderboard, 2, 3, 0.0, 100.0);
+	BoardItemSetProgressRange(gv_PowerNodeLeaderboard, 2, 4, 0.0, 100.0);
+	BoardItemSetProgressRange(gv_PowerNodeLeaderboard, 2, 5, 0.0, 100.0);
+	
+	BoardItemSetProgressValue(gv_PowerNodeLeaderboard, 2, 1, 0.0);
+	BoardItemSetProgressValue(gv_PowerNodeLeaderboard, 2, 2, 0.0);
+	BoardItemSetProgressValue(gv_PowerNodeLeaderboard, 2, 3, 0.0);
+	BoardItemSetProgressValue(gv_PowerNodeLeaderboard, 2, 4, 0.0);
+	BoardItemSetProgressValue(gv_PowerNodeLeaderboard, 2, 5, 0.0);
+	
+	BoardItemSetProgressShow(gv_PowerNodeLeaderboard, 2, 1, true);
+	BoardItemSetProgressShow(gv_PowerNodeLeaderboard, 2, 2, true);
+	BoardItemSetProgressShow(gv_PowerNodeLeaderboard, 2, 3, true);
+	BoardItemSetProgressShow(gv_PowerNodeLeaderboard, 2, 4, true);
+	BoardItemSetProgressShow(gv_PowerNodeLeaderboard, 2, 5, true);
+	
+	BoardShowAll(true, PlayerGroupAll());
+}
+
 bool gt_VoteComplete_Func(bool testConds, bool runActions)
 {
 	int i;
@@ -233,7 +310,7 @@ bool gt_VoteComplete_Func(bool testConds, bool runActions)
 		// Retrieve the player at index "i" in active players.
 		player = PlayerGroupPlayer(PlayerGroupActive(), i);
 		
-		UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Player resource modification: " + IntToString(player)));
+		UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Player resource modification: " + IntToString(player) + " for player: " + IntToString(player)));
 		
 		if (gv_RecessionMode == true)
 		{
@@ -251,6 +328,9 @@ bool gt_VoteComplete_Func(bool testConds, bool runActions)
 			PlayerModifyPropertyInt(player, c_playerPropMinerals, c_playerPropOperSetTo, 400);
 		}
 	}
+	
+	// Create, setup and show the leaderboard (power node region status, etc).
+	setupLeaderboard();
 	
 	return true;
 }
@@ -427,5 +507,181 @@ bool gt_PowerNodeControlChecker_Func(bool testConds, bool runActions)
 	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("TM: " + IntToString(topMidUnits) + ", TR: " + IntToString(topRightUnits) + ", M: " + IntToString(midUnits) + ", BM: " + IntToString(bottomMidUnits) + ", BL: " + IntToString(bottomLeftUnits)));
 	
 	
+	return true;
+}
+
+bool unitBelongsToRedTeam(unit u)
+{
+	int i;
+	int player;
+	
+	for (i = 1; i <= PlayerGroupCount(gv_RedTeam); i = i + 1)
+	{
+		// Retrieve the player at index "i" in active players.
+		player = PlayerGroupPlayer(gv_RedTeam, i);
+		UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Player: " + IntToString(player) + " owner Of Unit: " + IntToString(UnitGetOwner(u))));
+		if (player == UnitGetOwner(u))
+		{
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+bool unitBelongsToBlueTeam(unit u)
+{
+	int i;
+	int player;
+	
+	for (i = 1; i <= PlayerGroupCount(gv_BlueTeam); i = i + 1)
+	{
+		// Retrieve the player at index "i" in active players.
+		player = PlayerGroupPlayer(gv_BlueTeam, i);
+		
+		if (player == UnitGetOwner(u))
+		{
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+bool gt_TopMidUpdate_Func(bool testConds, bool runActions)
+{
+	int numRedUnits;
+	int numBlueUnits;
+	fixed diff;
+	int i;
+	unit curUnit;
+	
+	diff = 1.0;
+	numRedUnits = 0;
+	numBlueUnits = 0;
+	
+	for (i = 1; i <= UnitGroupCount(gv_TopMidUnits, c_unitCountAll); i = i + 1)
+	{
+		// Retrieve the unit at index "i" in the unit group.
+		curUnit = UnitGroupUnit(gv_TopMidUnits, i);
+		
+		// Add unit to red or blue unit total, if its alive.
+		if (UnitIsAlive(curUnit))
+		{
+			UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Derp alive"));
+			if (unitBelongsToRedTeam(curUnit))
+			{
+				numRedUnits = numRedUnits + 1;
+			}
+			else if (unitBelongsToBlueTeam(curUnit))
+			{
+				numBlueUnits = numBlueUnits + 1;
+			}
+		}
+	}
+	
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Units: " + IntToString(numRedUnits) + "red, " + IntToString(numBlueUnits) + "blue"));
+	
+	// Red has more units in area.
+	if (numRedUnits > numBlueUnits)
+	{
+		diff = 1.0 * (numRedUnits - numBlueUnits);
+		
+		// If red was in ownership of powernode.
+		//if (StringEqual(gv_TopMidOwner, "red", Insensitive))
+		if (gv_TopMidOwner == "red")
+		{
+			gv_TopMidValue = gv_TopMidValue + diff;
+			if (gv_TopMidValue > 100.0)
+			{
+				gv_TopMidValue = 100.0;
+			}
+		}
+		// If blue was in ownership of powernode.
+		else if (gv_TopMidOwner == "blue")
+		{
+			gv_TopMidValue = gv_TopMidValue - diff;
+			if (gv_TopMidValue < 1.0)
+			{
+				gv_TopMidOwner = "red";
+				//gv_TopMidValue = Abs(gv_TopMidValue);
+				//BoardItemSetProgressColor(gv_PowerNodeLeaderboard, 2, 1, Color(100.00, 0.00, 0.00), 1);
+			}
+		}
+		// Nobody touched it yet!
+		else
+		{
+			gv_TopMidOwner = "red";
+			gv_TopMidValue = gv_TopMidValue + diff;
+			//BoardItemSetProgressColor(gv_PowerNodeLeaderboard, 2, 1, Color(100.00, 0.00, 0.00), 1);
+		}
+	}
+	// Blue has more units in area.
+	else if (numBlueUnits > numRedUnits)
+	{
+		diff = numBlueUnits - numRedUnits;
+		
+		// If blue was in ownership of powernode.
+		if (gv_TopMidOwner == "blue")
+		{
+			gv_TopMidValue = gv_TopMidValue + diff;
+			if (gv_TopMidValue > 100.0)
+			{
+				gv_TopMidValue = 100.0;
+			}
+		}
+		// If red was in ownership of powernode.
+		else if (gv_TopMidOwner == "red")
+		{
+			gv_TopMidValue = gv_TopMidValue - diff;
+			if (gv_TopMidValue < 1.0)
+			{
+				gv_TopMidOwner = "blue";
+				//gv_TopMidValue = Abs(gv_TopMidValue);
+				//BoardItemSetProgressColor(gv_PowerNodeLeaderboard, 2, 1, Color(0.00, 0.00, 100.00), 1);
+			}
+		}
+		// Nobody touched it yet!
+		else
+		{
+			gv_TopMidOwner = "blue";
+			gv_TopMidValue = gv_TopMidValue + diff;
+			//BoardItemSetProgressColor(gv_PowerNodeLeaderboard, 2, 1, Color(0.00, 0.00, 100.00), 1);
+		}
+	}
+	
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Top Mid Value: " + FixedToString(gv_TopMidValue, 3)));
+	
+	// Update the leaderboard progress bar.
+	BoardItemSetProgressValue(gv_PowerNodeLeaderboard, 2, 1, gv_TopMidValue);
+
+	return true;
+}
+
+bool gt_TopRightUpdate_Func(bool testConds, bool runActions)
+{
+
+
+	return true;
+}
+
+bool gt_MidUpdate_Func(bool testConds, bool runActions)
+{
+
+
+	return true;
+}
+
+bool gt_BottomMidUpdate_Func(bool testConds, bool runActions)
+{
+
+
+	return true;
+}
+
+bool gt_BottomLeftUpdate_Func(bool testConds, bool runActions)
+{
+
+
 	return true;
 }

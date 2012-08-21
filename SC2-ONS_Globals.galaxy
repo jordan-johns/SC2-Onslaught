@@ -41,6 +41,20 @@ unitgroup gv_MidUnits;
 unitgroup gv_BottomMidUnits;
 unitgroup gv_BottomLeftUnits;
 
+string gv_TopMidOwner;
+string gv_TopRightOwner;
+string gv_MidOwner;
+string gv_BottomMidOwner;
+string gv_BottomLeftOwner;
+
+int gv_PowerNodeLeaderboard;
+
+fixed gv_TopMidValue;
+fixed gv_TopRightValue;
+fixed gv_MidValue;
+fixed gv_BottomMidValue;
+fixed gv_BottomLeftValue;
+
 
 //--------------------------------------------------------------------------------------------------
 // Globals Initialization
@@ -80,19 +94,30 @@ void InitResourceVoteDialog()
 void InitRedTeam()
 {
 	int i;
+	gv_RedTeam = PlayerGroupEmpty();
+	
 	for (i = 1; i <= 4; i = i + 1)
 	{
 		PlayerGroupAdd(gv_RedTeam, i);
 	}
+	
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Red Team Size: " + IntToString(PlayerGroupCount(gv_RedTeam))));
 }
 
 void InitBlueTeam()
 {
 	int i;
+	gv_BlueTeam = PlayerGroupEmpty();
+	
 	for (i = 5; i <= 8; i = i + 1)
 	{
 		PlayerGroupAdd(gv_BlueTeam, i);
 	}
+	
+	// For debugging only.
+	PlayerGroupAdd(gv_BlueTeam, 15);
+	
+	UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Blue Team Size: " + IntToString(PlayerGroupCount(gv_BlueTeam))));
 }
 
 void InitGlobals()
@@ -138,7 +163,16 @@ void InitGlobals()
 	gv_BottomMid = RegionFromId(4);
 	gv_BottomLeft = RegionFromId(5);
 	
+	gv_TopMidOwner = "nobody";
+	gv_TopRightOwner = "nobody";
+	gv_MidOwner = "nobody";
+	gv_BottomMidOwner = "nobody";
+	gv_BottomLeftOwner = "nobody";
 	
-	
+	gv_TopMidValue = 0.0;
+	gv_TopRightValue = 0.0;
+	gv_MidValue = 0.0;
+	gv_BottomMidValue = 0.0;
+	gv_BottomLeftValue = 0.0;
 }
 

@@ -32,6 +32,12 @@ void InitTriggers()
 	gt_BottomLeftControlLoss_init();
 	
 	gt_PowerNodeControlChecker_init();
+	
+	gt_TopMidUpdate_init();
+	gt_TopRightUpdate_init();
+	gt_MidUpdate_init();
+	gt_BottomMidUpdate_init();
+	gt_BottomLeftUpdate_init();
 }
 
 //--------------------------------------------------------------------------------------------------

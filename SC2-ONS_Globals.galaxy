@@ -47,6 +47,12 @@ string gv_MidOwner;
 string gv_BottomMidOwner;
 string gv_BottomLeftOwner;
 
+bool gv_TopMidOwned;
+bool gv_TopRightOwned;
+bool gv_MidOwned;
+bool gv_BottomMidOwned;
+bool gv_BottomLeftOwned;
+
 int gv_PowerNodeLeaderboard;
 
 fixed gv_TopMidValue;
@@ -168,6 +174,12 @@ void InitGlobals()
 	gv_MidOwner = "nobody";
 	gv_BottomMidOwner = "nobody";
 	gv_BottomLeftOwner = "nobody";
+	
+	gv_TopMidOwned = false;
+	gv_TopRightOwned = false;
+	gv_MidOwned = false;
+	gv_BottomMidOwned = false;
+	gv_BottomLeftOwned = false;
 	
 	gv_TopMidValue = 0.0;
 	gv_TopRightValue = 0.0;

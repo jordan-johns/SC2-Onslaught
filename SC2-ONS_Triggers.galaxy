@@ -519,7 +519,7 @@ bool unitBelongsToRedTeam(unit u)
 	{
 		// Retrieve the player at index "i" in active players.
 		player = PlayerGroupPlayer(gv_RedTeam, i);
-		UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Player: " + IntToString(player) + " owner Of Unit: " + IntToString(UnitGetOwner(u))));
+		//UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Player: " + IntToString(player) + " owner Of Unit: " + IntToString(UnitGetOwner(u))));
 		if (player == UnitGetOwner(u))
 		{
 			return true;
@@ -560,6 +560,7 @@ bool gt_TopMidUpdate_Func(bool testConds, bool runActions)
 	numRedUnits = 0;
 	numBlueUnits = 0;
 	
+	// Count the number of red and blue team units in the region.
 	for (i = 1; i <= UnitGroupCount(gv_TopMidUnits, c_unitCountAll); i = i + 1)
 	{
 		// Retrieve the unit at index "i" in the unit group.
@@ -595,6 +596,15 @@ bool gt_TopMidUpdate_Func(bool testConds, bool runActions)
 			if (gv_TopMidValue > 100.0)
 			{
 				gv_TopMidValue = 100.0;
+				
+				// Region controlled.
+				if (gv_TopMidOwned == false)
+				{
+					gv_TopMidOwned = true;
+					BoardItemSetProgressColor(gv_PowerNodeLeaderboard, 2, 1, Color(100.00, 0.00, 0.00), 1);
+					
+					UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Region controlled"));
+				}
 			}
 		}
 		// If blue was in ownership of powernode.
@@ -604,6 +614,16 @@ bool gt_TopMidUpdate_Func(bool testConds, bool runActions)
 			if (gv_TopMidValue < 1.0)
 			{
 				gv_TopMidOwner = "red";
+				gv_TopMidValue = -1.0 * gv_TopMidValue;
+				
+				// Region no longer controlled.
+				if (gv_TopMidOwned == true)
+				{
+					gv_TopMidOwned = false;
+					BoardItemSetProgressColor(gv_PowerNodeLeaderboard, 2, 1, Color(100.00, 100.00, 100.00), 1);
+					
+					UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Region no longer controlled"));
+				}
 				//gv_TopMidValue = Abs(gv_TopMidValue);
 				//BoardItemSetProgressColor(gv_PowerNodeLeaderboard, 2, 1, Color(100.00, 0.00, 0.00), 1);
 			}
@@ -628,6 +648,15 @@ bool gt_TopMidUpdate_Func(bool testConds, bool runActions)
 			if (gv_TopMidValue > 100.0)
 			{
 				gv_TopMidValue = 100.0;
+				
+				// Region controlled.
+				if (gv_TopMidOwned == false)
+				{
+					gv_TopMidOwned = true;
+					BoardItemSetProgressColor(gv_PowerNodeLeaderboard, 2, 1, Color(0.00, 0.00, 100.00), 1);
+					
+					UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Region controlled"));
+				}
 			}
 		}
 		// If red was in ownership of powernode.
@@ -637,6 +666,16 @@ bool gt_TopMidUpdate_Func(bool testConds, bool runActions)
 			if (gv_TopMidValue < 1.0)
 			{
 				gv_TopMidOwner = "blue";
+				gv_TopMidValue = -1.0 * gv_TopMidValue;
+				
+				// Region no longer controlled.
+				if (gv_TopMidOwned == true)
+				{
+					gv_TopMidOwned = false;
+					BoardItemSetProgressColor(gv_PowerNodeLeaderboard, 2, 1, Color(100.00, 100.00, 100.00), 1);
+					
+					UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, StringToText("Region no longer controlled"));
+				}
 				//gv_TopMidValue = Abs(gv_TopMidValue);
 				//BoardItemSetProgressColor(gv_PowerNodeLeaderboard, 2, 1, Color(0.00, 0.00, 100.00), 1);
 			}
